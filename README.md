@@ -10,6 +10,17 @@ A Paper plugin for managing player ranks with automatic group assignment and ran
 - 🔄 Hot-reload configuration with `/buzzreload`
 - 🛡️ Vulcan anti-cheat integration ready
 
+## ranks
+   newplayer, = to buzzer
+    buzzcoach,
+    trial_mod,
+    co_mod,
+    mod,
+    trial_admin,
+    co_admin,
+    buzzadmin,
+    buzzowner
+
 ## Rank Ladder
 ```
 BUZZER → COACH → TRIAL_MOD → CO_MOD → MOD → TRIAL_ADMIN → CO_ADMIN → ADMIN
