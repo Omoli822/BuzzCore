@@ -1,7 +1,6 @@
 package com.buzzmc.cmd;
 
 import com.buzzmc.BuzzCore;
-import com.buzzmc.rank.Rank;
 import com.buzzmc.util.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -55,8 +54,8 @@ public class RankCommand implements TabExecutor {
                     return true;
                 }
                 String rankStr = args[2];
-                Rank rank = Rank.fromString(rankStr);
-                if (rank == null || !plugin.ranks().ladder().contains(rank)) {
+                // Validate rank exists in config
+                if (!plugin.ranks().isValidRank(rankStr)) {
                     sender.sendMessage(Colors.color(plugin.prefix() + plugin.getConfig().getString("messages.invalidRank")
                             .replace("%valid%", plugin.ranks().validRanksString())));
                     return true;
@@ -66,12 +65,13 @@ public class RankCommand implements TabExecutor {
                     sender.sendMessage(Colors.color(plugin.prefix() + plugin.getConfig().getString("messages.playerNotFound")));
                     return true;
                 }
-                // Use toLuckPermsGroup() to convert to lowercase
-                boolean ok = plugin.permissions().setPrimaryGroup(target.getUniqueId(), rank.toLuckPermsGroup());
+                // Get exact rank name from config (preserves casing)
+                String normalizedRank = plugin.ranks().normalizeRank(rankStr);
+                boolean ok = plugin.permissions().setPrimaryGroup(target.getUniqueId(), normalizedRank);
                 if (ok) {
                     sender.sendMessage(Colors.color(plugin.prefix() + plugin.getConfig().getString("messages.rankSet")
                             .replace("%player%", target.getName() == null ? "player" : target.getName())
-                            .replace("%rank%", rank.name())));
+                            .replace("%rank%", normalizedRank)));
                 } else {
                     sender.sendMessage(Colors.color(plugin.prefix() + "&cFailed to set rank."));
                 }
@@ -93,21 +93,30 @@ public class RankCommand implements TabExecutor {
                     return true;
                 }
                 String currentGroup = plugin.permissions().getPrimaryGroup(target.getUniqueId());
-                Rank current = Rank.fromString(currentGroup);
-                if (current == null) current = Rank.NEWPLAYER;
+                
+                // If player has no rank or invalid rank, use first rank in ladder
+                String current = currentGroup;
+                if (!plugin.ranks().isValidRank(current)) {
+                    current = plugin.ranks().ladder().isEmpty() ? null : plugin.ranks().ladder().get(0);
+                }
+                
+                if (current == null) {
+                    sender.sendMessage(Colors.color(plugin.prefix() + "&cNo ranks configured in config.yml!"));
+                    return true;
+                }
 
-                Optional<Rank> dest = sub.equals("next") ? plugin.ranks().next(current) : plugin.ranks().prev(current);
+                Optional<String> dest = sub.equals("next") ? plugin.ranks().next(current) : plugin.ranks().prev(current);
                 if (dest.isEmpty()) {
                     sender.sendMessage(Colors.color(plugin.prefix() + plugin.getConfig().getString(sub.equals("next") ? "messages.noNext" : "messages.noPrev")));
                     return true;
                 }
-                // Use toLuckPermsGroup() to convert to lowercase
-                boolean ok = plugin.permissions().setPrimaryGroup(target.getUniqueId(), dest.get().toLuckPermsGroup());
+                
+                boolean ok = plugin.permissions().setPrimaryGroup(target.getUniqueId(), dest.get());
                 if (ok) {
                     String msgKey = sub.equals("next") ? "messages.rankNext" : "messages.rankPrev";
                     sender.sendMessage(Colors.color(plugin.prefix() + plugin.getConfig().getString(msgKey)
                             .replace("%player%", target.getName() == null ? "player" : target.getName())
-                            .replace("%rank%", dest.get().name())));
+                            .replace("%rank%", dest.get())));
                 } else {
                     sender.sendMessage(Colors.color(plugin.prefix() + "&cFailed to update rank."));
                 }
@@ -130,7 +139,8 @@ public class RankCommand implements TabExecutor {
             return Bukkit.getOnlinePlayers().stream().map(p -> p.getName()).collect(Collectors.toList());
         }
         if (args.length == 3 && args[0].equalsIgnoreCase("set")) {
-            return Arrays.stream(com.buzzmc.rank.Rank.values()).map(Enum::name).collect(Collectors.toList());
+            // Tab complete with ranks from config
+            return plugin.ranks().ladder();
         }
         return Collections.emptyList();
     }
