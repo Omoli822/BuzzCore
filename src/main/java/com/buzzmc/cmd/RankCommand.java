@@ -93,7 +93,7 @@ public class RankCommand implements TabExecutor {
                 }
                 String currentGroup = plugin.permissions().getPrimaryGroup(target.getUniqueId());
                 Rank current = Rank.fromString(currentGroup);
-                if (current == null) current = Rank.BUZZER;
+                if (current == null) current = Rank.newplayer;
 
                 Optional<Rank> dest = sub.equals("next") ? plugin.ranks().next(current) : plugin.ranks().prev(current);
                 if (dest.isEmpty()) {
