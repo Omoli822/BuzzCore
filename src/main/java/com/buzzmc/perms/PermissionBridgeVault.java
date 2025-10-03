@@ -1,41 +1,48 @@
 package com.buzzmc.perms;
 
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
 public class PermissionBridgeVault implements PermissionBridge {
     private final Permission perms;
 
-    public PermissionBridgeVault(Permission perms) { this.perms = perms; }
+    public PermissionBridgeVault(Permission perms) {
+        this.perms = perms;
+    }
+
+    private OfflinePlayer off(UUID uuid) {
+        return Bukkit.getOfflinePlayer(uuid);
+    }
 
     @Override
     public boolean ensureDefaultGroup(UUID uuid, String groupId) {
-        String current = getPrimaryGroup(uuid);
-        if (current == null || current.isEmpty()) {
-            // Vault doesn't have a strict "primary"; add to group
-            return perms.playerAddGroup(null, uuid, groupId);
+        String[] groups = perms.getPlayerGroups(null, off(uuid));
+        if (groups == null || groups.length == 0) {
+            return perms.playerAddGroup(null, off(uuid), groupId);
         }
         return false;
     }
 
     @Override
     public boolean setPrimaryGroup(UUID uuid, String groupId) {
-        // Simulate "primary" by clearing other groups (best-effort)
-        String[] groups = perms.getPlayerGroups(null, uuid);
+        String[] groups = perms.getPlayerGroups(null, off(uuid));
         if (groups != null) {
             for (String g : groups) {
-                perms.playerRemoveGroup(null, uuid, g);
+                if (!g.equalsIgnoreCase(groupId)) {
+                    perms.playerRemoveGroup(null, off(uuid), g);
+                }
             }
         }
-        return perms.playerAddGroup(null, uuid, groupId);
+        return perms.playerAddGroup(null, off(uuid), groupId);
     }
 
     @Override
     public String getPrimaryGroup(UUID uuid) {
-        String[] groups = perms.getPlayerGroups(null, uuid);
+        String[] groups = perms.getPlayerGroups(null, off(uuid));
         if (groups == null || groups.length == 0) return "";
-        // Treat the first as primary
-        return groups[0];
+        return groups[0] == null ? "" : groups[0];
     }
 }
