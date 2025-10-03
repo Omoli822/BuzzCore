@@ -1,0 +1,29 @@
+# BuzzCore configuration
+prefix: "&6&lBUZZ &7» "
+autoAssignDefault: true
+defaultGroup: "buzzer"
+
+# Rank ladder (low to high)
+ranks:
+  - BUZZER
+  - COACH
+  - TRIAL_MOD
+  - CO_MOD
+  - MOD
+  - TRIAL_ADMIN
+  - CO_ADMIN
+  - ADMIN
+
+messages:
+  assignedDefault: "&aWelcome! You've been placed in the &f%buzzer% &agroup."
+  alreadyInDefault: "&7You're already in the default group."
+  noLuckVault: "&cNo LuckPerms/Vault permissions provider found. Rank ops disabled."
+  rankSet: "&a%player%'s rank set to &e%rank%&a."
+  rankInfo: "&e%player% &7is &f%rank%&7."
+  rankNext: "&aPromoted &e%player% &ato &f%rank%&a."
+  rankPrev: "&aDemoted &e%player% &ato &f%rank%&a."
+  noNext: "&cNo higher rank exists."
+  noPrev: "&cNo lower rank exists."
+  playerNotFound: "&cPlayer not found."
+  invalidRank: "&cInvalid rank. Valid: %valid%"
+  reloaded: "&aBuzzCore reloaded."

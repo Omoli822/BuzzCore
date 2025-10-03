@@ -1,0 +1,23 @@
+name: BuzzCore
+main: com.buzzmc.BuzzCore
+version: ${version}
+api-version: '1.21'
+author: Buzz Team
+softdepend: [LuckPerms, Vault, Vulcan]
+
+commands:
+  rank:
+    description: Manage player ranks
+    usage: /rank <set|next|prev|info> [player] [rank]
+    permission: buzz.rank
+  buzzreload:
+    description: Reload BuzzCore config
+    permission: buzz.admin
+
+permissions:
+  buzz.rank:
+    description: Use /rank
+    default: op
+  buzz.admin:
+    description: Admin for BuzzCore
+    default: op
