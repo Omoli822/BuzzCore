@@ -85,11 +85,11 @@ public final class BuzzCore extends JavaPlugin implements Listener {
             return;
         }
 
-        String defaultGroup = getConfig().getString("defaultGroup", "buzzer");
+        String defaultGroup = getConfig().getString("defaultGroup", "newplayer");
         boolean assigned = permissionBridge.ensureDefaultGroup(e.getPlayer().getUniqueId(), defaultGroup);
         if (assigned) {
             e.getPlayer().sendMessage(Colors.color(prefix + getConfig().getString("messages.assignedDefault")
-                    .replace("%buzzer%", defaultGroup)));
+                    .replace("%newplayer%", defaultGroup)));
         } else {
             e.getPlayer().sendMessage(Colors.color(prefix + getConfig().getString("messages.alreadyInDefault")));
         }
