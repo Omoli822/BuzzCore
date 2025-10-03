@@ -1,6 +1,8 @@
 plugins {
     java
 }
+group = "com.buzzmc"
+version = "0.0.1"
 
 java {
     toolchain {
