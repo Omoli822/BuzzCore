@@ -12,14 +12,14 @@ A Paper plugin for managing player ranks with automatic group assignment and ran
 
 ## Rank Ladder
 ```
-BUZZER (newplayer) → COACH (buzzcoach) → TRIAL_MOD → CO_MOD → MOD → TRIAL_ADMIN → CO_ADMIN → ADMIN (buzzadmin) → OWNER (buzzowner)
+BUZZER (newplayer) → COACH (buzzcoach) → TRIAL_MOD → CO_MOD → MOD → TRIAL_ADMIN → CO_ADMIN → ADMIN (admin) → OWNER (buzzowner)
 ```
 
-**Display Names vs Group Names:**
-- **BUZZER** = `newplayer` group
-- **COACH** = `buzzcoach` group  
-- **ADMIN** = `buzzadmin` group
-- **OWNER** = `buzzowner` group
+**Display Names vs LuckPerms Groups:**
+- **BUZZER** = `newplayer` group in LuckPerms
+- **COACH** = `buzzcoach` group in LuckPerms
+- **ADMIN** = `admin` group in LuckPerms
+- **OWNER** = `buzzowner` group in LuckPerms
 
 ## Commands
 | Command | Description | Permission |
@@ -33,7 +33,8 @@ BUZZER (newplayer) → COACH (buzzcoach) → TRIAL_MOD → CO_MOD → MOD → TR
 ## Command Examples
 ```
 /rank set oliver54543 BUZZOWNER
-/rank set PlayerName NEWPLAYER
+/rank set PlayerName NEWPLAYER  
+/rank set PlayerName BUZZCOACH
 /rank next PlayerName
 /rank prev PlayerName
 /rank info PlayerName
@@ -49,8 +50,10 @@ BUZZER (newplayer) → COACH (buzzcoach) → TRIAL_MOD → CO_MOD → MOD → TR
 1. Download the latest release
 2. Place `BuzzCore.jar` in your `plugins/` folder
 3. Ensure LuckPerms or Vault is installed
-4. Restart server
-5. Configure `plugins/BuzzCore/config.yml` as needed
+4. Create the following groups in LuckPerms (all lowercase):
+   - `newplayer`, `buzzcoach`, `trial_mod`, `co_mod`, `mod`, `trial_admin`, `co_admin`, `admin`, `buzzowner`
+5. Restart server
+6. Configure `plugins/BuzzCore/config.yml` as needed
 
 ## Building from Source
 ```bash
@@ -72,16 +75,17 @@ autoAssignDefault: true
 defaultGroup: "newplayer"
 
 # Rank ladder (low to high) - fully customizable
+# Use UPPERCASE in config (will be converted to lowercase for LuckPerms)
 ranks:
-  - NEWPLAYER
-  - BUZZCOACH
-  - TRIAL_MOD
-  - CO_MOD
-  - MOD
-  - TRIAL_ADMIN
-  - CO_ADMIN
-  - BUZZADMIN
-  - BUZZOWNER
+  - NEWPLAYER      # Maps to 'newplayer' in LuckPerms
+  - BUZZCOACH      # Maps to 'buzzcoach' in LuckPerms
+  - TRIAL_MOD      # Maps to 'trial_mod' in LuckPerms
+  - CO_MOD         # Maps to 'co_mod' in LuckPerms
+  - MOD            # Maps to 'mod' in LuckPerms
+  - TRIAL_ADMIN    # Maps to 'trial_admin' in LuckPerms
+  - CO_ADMIN       # Maps to 'co_admin' in LuckPerms
+  - ADMIN          # Maps to 'admin' in LuckPerms
+  - BUZZOWNER      # Maps to 'buzzowner' in LuckPerms
 
 # Customize all plugin messages
 messages:
@@ -94,10 +98,21 @@ messages:
 - `buzz.rank` - Use /rank commands (default: op)
 - `buzz.admin` - Admin commands like /buzzreload (default: op)
 
-## LuckPerms/Vault Notes
-- **Commands use UPPERCASE**: `NEWPLAYER`, `BUZZCOACH`, `BUZZOWNER`, etc.
-- **LuckPerms groups use lowercase**: `newplayer`, `buzzcoach`, `buzzowner`, etc.
-- The plugin automatically converts between the two formats
+## How It Works
+
+### Command Usage (UPPERCASE):
+When you type commands, use **UPPERCASE** rank names:
+- `/rank set player BUZZOWNER` ✅
+- `/rank set player NEWPLAYER` ✅
+- `/rank set player TRIAL_MOD` ✅
+
+### LuckPerms Groups (lowercase):
+In LuckPerms, create groups with **lowercase** names:
+- `newplayer` (not NEWPLAYER)
+- `buzzowner` (not BUZZOWNER)
+- `trial_mod` (not TRIAL_MOD)
+
+The plugin automatically converts between the two formats!
 
 ## Project Structure
 ```
@@ -111,7 +126,7 @@ BuzzCore/
 │   │   ├── PermissionBridgeLuckPerms.java
 │   │   └── PermissionBridgeVault.java
 │   ├── rank/
-│   │   ├── Rank.java           # Rank enumeration
+│   │   ├── Rank.java           # Rank enumeration with conversion
 │   │   └── RankService.java    # Rank progression logic
 │   ├── util/
 │   │   └── Colors.java         # Chat color utilities
