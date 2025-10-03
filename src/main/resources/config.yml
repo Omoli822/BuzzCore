@@ -1,7 +1,7 @@
 # BuzzCore configuration
 prefix: "&6&lBUZZ &7» "
 autoAssignDefault: true
-defaultGroup: "buzzer"
+defaultGroup: "newplayer"
 
 # Rank ladder (low to high)
 ranks:
@@ -15,7 +15,7 @@ ranks:
   - ADMIN
 
 messages:
-  assignedDefault: "&aWelcome! You've been placed in the &f%buzzer% &agroup."
+  assignedDefault: "&aWelcome! You've been placed in the &f%newplayer% &agroup."
   alreadyInDefault: "&7You're already in the default group."
   noLuckVault: "&cNo LuckPerms/Vault permissions provider found. Rank ops disabled."
   rankSet: "&a%player%'s rank set to &e%rank%&a."
