@@ -1,13 +1,10 @@
-plugins {
-    java
-}
+plugins { java }
+
 group = "com.buzzmc"
 version = "0.0.1"
 
 java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
-    }
+    toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
 }
 
 repositories {
@@ -17,21 +14,20 @@ repositories {
 }
 
 dependencies {
-    // Paper API (works against 1.21.x, including experimental builds)
+    // Paper API for compilation (match 1.21.x family; works fine against 1.21.9 server)
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
 
-    // Optional deps (compileOnly so the jar doesn't shade them)
+    // LuckPerms API (needed for imports like net.luckperms.api.*)
     compileOnly("net.luckperms:api:5.4")
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 
-    // (Optional) annotations
-    compileOnly("org.jetbrains:annotations:24.0.1")
+    // Vault API (only if your code imports net.milkbowl.vault.*)
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 }
 
 tasks.processResources {
     filteringCharset = "UTF-8"
     filesMatching("plugin.yml") {
-        expand("version" to (project.version.toString()))
+        expand("version" to project.version)
     }
 }
 
