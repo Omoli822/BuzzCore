@@ -66,7 +66,8 @@ public class RankCommand implements TabExecutor {
                     sender.sendMessage(Colors.color(plugin.prefix() + plugin.getConfig().getString("messages.playerNotFound")));
                     return true;
                 }
-                boolean ok = plugin.permissions().setPrimaryGroup(target.getUniqueId(), rank.name().toLowerCase());
+                // Use toLuckPermsGroup() to convert to lowercase
+                boolean ok = plugin.permissions().setPrimaryGroup(target.getUniqueId(), rank.toLuckPermsGroup());
                 if (ok) {
                     sender.sendMessage(Colors.color(plugin.prefix() + plugin.getConfig().getString("messages.rankSet")
                             .replace("%player%", target.getName() == null ? "player" : target.getName())
@@ -93,14 +94,15 @@ public class RankCommand implements TabExecutor {
                 }
                 String currentGroup = plugin.permissions().getPrimaryGroup(target.getUniqueId());
                 Rank current = Rank.fromString(currentGroup);
-                if (current == null) current = Rank.newplayer;
+                if (current == null) current = Rank.NEWPLAYER;
 
                 Optional<Rank> dest = sub.equals("next") ? plugin.ranks().next(current) : plugin.ranks().prev(current);
                 if (dest.isEmpty()) {
                     sender.sendMessage(Colors.color(plugin.prefix() + plugin.getConfig().getString(sub.equals("next") ? "messages.noNext" : "messages.noPrev")));
                     return true;
                 }
-                boolean ok = plugin.permissions().setPrimaryGroup(target.getUniqueId(), dest.get().name().toLowerCase());
+                // Use toLuckPermsGroup() to convert to lowercase
+                boolean ok = plugin.permissions().setPrimaryGroup(target.getUniqueId(), dest.get().toLuckPermsGroup());
                 if (ok) {
                     String msgKey = sub.equals("next") ? "messages.rankNext" : "messages.rankPrev";
                     sender.sendMessage(Colors.color(plugin.prefix() + plugin.getConfig().getString(msgKey)
