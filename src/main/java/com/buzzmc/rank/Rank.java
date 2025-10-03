@@ -2,13 +2,14 @@ package com.buzzmc.rank;
 
 public enum Rank {
     newplayer,
-    COACH,
-    TRIAL_MOD,
-    CO_MOD,
-    MOD,
-    TRIAL_ADMIN,
-    CO_ADMIN,
-    ADMIN;
+    buzzcoach,
+    trial_mod,
+    co_mod,
+    mod,
+    trial_admin,
+    co_admin,
+    buzzadmin,
+    buzzowner;
 
     public static Rank fromString(String s) {
         if (s == null) return null;
