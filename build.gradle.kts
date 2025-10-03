@@ -1,7 +1,7 @@
 plugins { java }
 
 group = "com.buzzmc"
-version = "0.0.1"
+version = "1.0.0"
 
 java {
     toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
