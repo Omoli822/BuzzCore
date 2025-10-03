@@ -1,7 +1,7 @@
 package com.buzzmc.rank;
 
 public enum Rank {
-    BUZZER,
+    newplayer,
     COACH,
     TRIAL_MOD,
     CO_MOD,
