@@ -8,15 +8,20 @@ public enum Rank {
     MOD,
     TRIAL_ADMIN,
     CO_ADMIN,
-    BUZZADMIN,
+    ADMIN,
     BUZZOWNER;
 
     public static Rank fromString(String s) {
         if (s == null) return null;
         try {
-            return Rank.valueOf(s.trim().toUpperCase());
+            return Rank.valueOf(s.trim().toUpperCase().replace("-", "_"));
         } catch (IllegalArgumentException ex) {
             return null;
         }
+    }
+    
+    // Convert to LuckPerms group name (lowercase)
+    public String toLuckPermsGroup() {
+        return this.name().toLowerCase();
     }
 }
