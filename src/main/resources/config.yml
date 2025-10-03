@@ -5,16 +5,15 @@ defaultGroup: "newplayer"
 
 # Rank ladder (low to high)
 ranks:
-  - newplayer
-  - buzzcoach
-  - trial_mod
-  - co_mod
-  - mod
-  - trial_admin
-  - co_admin
-  - admin
-  - buzzowner
-
+  - NEWPLAYER
+  - BUZZCOACH
+  - TRIAL_MOD
+  - CO_MOD
+  - MOD
+  - TRIAL_ADMIN
+  - CO_ADMIN
+  - BUZZADMIN
+  - BUZZOWNER
 
 messages:
   assignedDefault: "&aWelcome! You've been placed in the &f%newplayer% &agroup."
