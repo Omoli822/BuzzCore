@@ -10,21 +10,16 @@ A Paper plugin for managing player ranks with automatic group assignment and ran
 - 🔄 Hot-reload configuration with `/buzzreload`
 - 🛡️ Vulcan anti-cheat integration ready
 
-## ranks
-   newplayer, = to buzzer
-    buzzcoach,
-    trial_mod,
-    co_mod,
-    mod,
-    trial_admin,
-    co_admin,
-    buzzadmin,
-    buzzowner
-
 ## Rank Ladder
 ```
-BUZZER → COACH → TRIAL_MOD → CO_MOD → MOD → TRIAL_ADMIN → CO_ADMIN → ADMIN
+BUZZER (newplayer) → COACH (buzzcoach) → TRIAL_MOD → CO_MOD → MOD → TRIAL_ADMIN → CO_ADMIN → ADMIN (buzzadmin) → OWNER (buzzowner)
 ```
+
+**Display Names vs Group Names:**
+- **BUZZER** = `newplayer` group
+- **COACH** = `buzzcoach` group  
+- **ADMIN** = `buzzadmin` group
+- **OWNER** = `buzzowner` group
 
 ## Commands
 | Command | Description | Permission |
@@ -34,6 +29,15 @@ BUZZER → COACH → TRIAL_MOD → CO_MOD → MOD → TRIAL_ADMIN → CO_ADMIN �
 | `/rank prev <player>` | Demote to previous rank | `buzz.rank` |
 | `/rank info <player>` | View player's current rank | `buzz.rank` |
 | `/buzzreload` | Reload configuration | `buzz.admin` |
+
+## Command Examples
+```
+/rank set oliver54543 BUZZOWNER
+/rank set PlayerName NEWPLAYER
+/rank next PlayerName
+/rank prev PlayerName
+/rank info PlayerName
+```
 
 ## Requirements
 - Paper 1.21.1+
@@ -65,22 +69,23 @@ prefix: "&6&lBUZZ &7» "
 
 # Auto-assign new players to default group
 autoAssignDefault: true
-defaultGroup: "buzzer"
+defaultGroup: "newplayer"
 
 # Rank ladder (low to high) - fully customizable
 ranks:
-  - BUZZER
-  - COACH
+  - NEWPLAYER
+  - BUZZCOACH
   - TRIAL_MOD
   - CO_MOD
   - MOD
   - TRIAL_ADMIN
   - CO_ADMIN
-  - ADMIN
+  - BUZZADMIN
+  - BUZZOWNER
 
 # Customize all plugin messages
 messages:
-  assignedDefault: "&aWelcome! You've been placed in the &f%buzzer% &agroup."
+  assignedDefault: "&aWelcome! You've been placed in the &f%newplayer% &agroup."
   alreadyInDefault: "&7You're already in the default group."
   # ... and more
 ```
@@ -90,8 +95,9 @@ messages:
 - `buzz.admin` - Admin commands like /buzzreload (default: op)
 
 ## LuckPerms/Vault Notes
-- **LuckPerms** (recommended): Groups should match the lower-case of rank names (e.g., `buzzer`, `coach`, `trial_mod`)
-- **Vault**: The plugin emulates primary groups by managing group memberships
+- **Commands use UPPERCASE**: `NEWPLAYER`, `BUZZCOACH`, `BUZZOWNER`, etc.
+- **LuckPerms groups use lowercase**: `newplayer`, `buzzcoach`, `buzzowner`, etc.
+- The plugin automatically converts between the two formats
 
 ## Project Structure
 ```
