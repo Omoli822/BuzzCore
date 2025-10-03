@@ -1,22 +1,30 @@
-# BuzzCore configuration
+# BuzzCore Community Edition Configuration
+# You can use ANY rank names you want!
 prefix: "&6&lBUZZ &7» "
 autoAssignDefault: true
-defaultGroup: "newplayer"
+
+# Set this to the first rank in your ladder
+defaultGroup: "default"
 
 # Rank ladder (low to high)
+# Use the exact same names as your LuckPerms/Vault groups!
+# The plugin will preserve the casing you use here.
+#
+# Examples:
+# - default → member → vip → mvp → admin → owner
+# - newbie → regular → donor → moderator → admin
+# - citizen → noble → knight → lord → king
+#
 ranks:
-  - NEWPLAYER
-  - BUZZCOACH
-  - TRIAL_MOD
-  - CO_MOD
-  - MOD
-  - TRIAL_ADMIN
-  - CO_ADMIN
-  - BUZZADMIN
-  - BUZZOWNER
+  - default
+  - member
+  - vip
+  - mvp
+  - admin
+  - owner
 
 messages:
-  assignedDefault: "&aWelcome! You've been placed in the &f%newplayer% &agroup."
+  assignedDefault: "&aWelcome! You've been placed in the &f%default% &agroup."
   alreadyInDefault: "&7You're already in the default group."
   noLuckVault: "&cNo LuckPerms/Vault permissions provider found. Rank ops disabled."
   rankSet: "&a%player%'s rank set to &e%rank%&a."
